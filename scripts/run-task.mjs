@@ -1,9 +1,19 @@
 // 直接调用构建产物中的 attendance 任务，绕过 dev 服务器（CI 冷启动会卡死）
 // 用法: pnpm build && node scripts/run-task.mjs
-const mod = await import(new URL('../.output/server/_chunks/attendance.mjs', import.meta.url))
+import { readdirSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+
+const chunksDir = join(dirname(fileURLToPath(import.meta.url)), '../.output/server/_chunks')
+const file = readdirSync(chunksDir).find((f) => /^attendance.*[.]mjs$/.test(f))
+if (!file) {
+  console.error('[skland] 未找到 attendance 任务 chunk')
+  process.exit(2)
+}
+const mod = await import(new URL(file, 'file://' + chunksDir.replace(/\/g, '/') + '/').href)
 const task = mod.default
 if (!task || typeof task.run !== 'function') {
-  console.error('[skland] attendance 任务 chunk 未找到')
+  console.error('[skland] chunk 缺少 run()')
   process.exit(2)
 }
 const result = await task.run({ name: 'attendance', payload: {} })
