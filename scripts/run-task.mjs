@@ -7,7 +7,9 @@ import { dirname, join } from 'node:path'
 const chunksDir = join(dirname(fileURLToPath(import.meta.url)), '../.output/server/_chunks')
 const file = readdirSync(chunksDir).find((f) => /^attendance.*[.]mjs$/.test(f))
 if (!file) {
-  console.error('[skland] 未找到 attendance 任务 chunk')
+  console.error('[skland] 未找到 attendance 任务 chunk，目录内容:')
+  console.error(readdirSync(chunksDir).join('
+'))
   process.exit(2)
 }
 const mod = await import(pathToFileURL(join(chunksDir, file)).href)
