@@ -2,7 +2,7 @@
 // 用法: pnpm build && node scripts/run-task.mjs
 // 任务文件可能落在 .output/server/_tasks 或 _chunks（rolldown 分块不稳定），两处都找
 import { readdirSync, existsSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, join } from 'node:path'
 
 const base = join(dirname(fileURLToPath(import.meta.url)), '../.output/server')
