@@ -63,7 +63,7 @@ try {
     core.info('超时时间: 60 秒')
     await waitOn({
       resources: [BASE_URL],
-      timeout: 60000, // 60 秒超时
+      timeout: 180000, // 180 秒超时（CI 冷启动编译慢）
       interval: 1000, // 每秒检查一次
     })
     core.info('✅ HTTP 服务已启动')
