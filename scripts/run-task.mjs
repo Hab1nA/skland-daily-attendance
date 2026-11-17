@@ -10,7 +10,7 @@ if (!file) {
   console.error('[skland] 未找到 attendance 任务 chunk')
   process.exit(2)
 }
-const mod = await import(new URL(file, 'file://' + chunksDir.replace(/\/g, '/') + '/').href)
+const mod = await import(pathToFileURL(join(chunksDir, file)).href)
 const task = mod.default
 if (!task || typeof task.run !== 'function') {
   console.error('[skland] chunk 缺少 run()')
